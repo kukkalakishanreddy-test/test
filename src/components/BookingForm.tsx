@@ -114,16 +114,15 @@ export default function BookingForm() {
       const response = await fetch("/api/send-itinerary", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          phone: number,
-          name: values.name,
-          route: `${values.pickup} to ${values.destination}`,
-          dates: `${formatDate(values.fromDate)} to ${formatDate(values.toDate)}`,
-          duration: `${estimate.days} day(s); ${values.travellers} traveller(s); ${values.tripType}`,
-          distance: `${estimate.km} km total; ${estimate.includedKm} km included; ${estimate.extraKm} extra km`,
-          total: `₹${estimate.total.toLocaleString("en-IN")} total (base ₹${estimate.base.toLocaleString("en-IN")} + extra km ₹${estimate.extraCharge.toLocaleString("en-IN")})`,
-          notes: values.notes
-        })
+       body: JSON.stringify({
+  phone: number,
+  name: values.name,
+  pickup: values.pickup,
+  destination: values.destination,
+  travelDate: `${formatDate(values.fromDate)} to ${formatDate(values.toDate)}`,
+  itinerary: itineraryText(),
+  total: `₹${estimate.total.toLocaleString("en-IN")}`
+})
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Unable to send your itinerary.");
